@@ -49,3 +49,19 @@ fn main() -> Result<()> {
     }
     Ok(())
 }
+
+
+// use sysinfo::Disks;
+
+// pub fn get_current_drives2() -> (Disks, Vec<String>) {
+//     let mut drivers_list: Vec<String> = vec![];
+//     let disks = Disks::new_with_refreshed_list();
+//     for disk in disks.list() {
+//         println!("{:?}: {:?}", disk.name(), disk.kind());
+//         drivers_list.push(
+//             format!("{:?}", disk)
+//         )
+
+//     }
+//     (disks, drivers_list)
+// }
