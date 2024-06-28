@@ -53,20 +53,12 @@ fn main3() -> Result<()> {
     use std::process::Command;
 
 fn main() {
-    let directory_path = r"D:\DEV\VIDEO_TEMP\PARSED_VIDEO"; // Replace with your actual folder path
+    let directory_path_str = r"D:\DEV\VIDEO_TEMP\PARSED_VIDEO";
+    // let file_path_str      = r"D:\DEV\VIDEO_TEMP\PARSED_VIDEO\GoPro_9 GX019327_FFCUT.mp4";
 
-    // Command to open the folder in Windows Explorer
-    let open_folder_command = format!("explorer \"{}\"", directory_path);
-    let _ = Command::new("powershell")
-                    .arg("-Command")
-                    .arg(open_folder_command)
-                    .output()
-                    .expect("Failed to execute command");
-
-    // Command to find the most recently modified file in the folder
     let select_latest_file_command = format!(
-        "Get-ChildItem -Path \"{}\" | Sort-Object LastWriteTime -Descending | Select-Object -First 1",
-        directory_path,
+        "Get-ChildItem -Path \"{}\" | Sort-Object LastWriteTime -Descending | Select-Object -First 1 -ExpandProperty FullName",
+        directory_path_str,
     );
     let output = Command::new("powershell")
                        .arg("-Command")
@@ -77,8 +69,17 @@ fn main() {
     // Assuming the latest file name is printed to stdout
     let latest_file_name = String::from_utf8_lossy(&output.stdout);
     println!("Latest file: {}", latest_file_name.trim());
+    let latest_file_path = format!("{}", latest_file_name.trim());
 
-    // Note: This code does not actually select the file in Windows Explorer; it merely prints the name of the latest file.
+
+    println!("latest_file_path: {}", latest_file_path);
+
+
+    let _ = Command::new("explorer.exe")
+        .args(&["/select,", &latest_file_name.trim()])
+        .output()
+        .expect("Failed to execute command");
+
 }
 
 // use sysinfo::Disks;
